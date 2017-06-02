@@ -47,20 +47,31 @@ public class ApiAccess
         //return this.token;
     }
 
-    public Map<String, Object> data(String params)
+    public Map<String, Object> data(String tableName)
+    {
+        String test = httpConnection.run(url+"/data/"+tableName, "{}");
+        System.out.println(test);
+        Map<String, Object> result = new HashMap();
+        return result;
+    }
+
+    public Map<String, Object> data(String tableName, Long id)
+    {
+        String test = httpConnection.run(url+"/data/"+tableName+"/"+Long.toString(id), "{}");
+        System.out.println(test);
+        Map<String, Object> result = new HashMap();
+        return result;
+    }
+
+    public Map<String, Object> api(String controller, String method, String params)
     {
         Map<String, Object> result = new HashMap();
         return result;
     }
 
-    public Map<String, Object> api(String params)
+    public Map<String, Object> mailer(String method, String params)
     {
-        Map<String, Object> result = new HashMap();
-        return result;
-    }
-
-    public Map<String, Object> mailer(String params)
-    {
+        String controller = "mail";
         Map<String, Object> result = new HashMap();
         return result;
     }
