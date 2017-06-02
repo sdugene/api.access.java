@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 public class HttpConnection {
     public String method;
@@ -21,29 +22,29 @@ public class HttpConnection {
         return this;
     }
 
-    public String run(String urlString, String params)
+    public HashMap<String,String> response(String urlString, String params)
     {
         InputStream inStream = null;
         URL url = null;
-        System.out.println(urlString);
-        System.out.println(this.method);
         try {
             url = new URL(urlString.toString());
-            urlConnection = get(url);
+            if (this.method.equals("POST")) {
+                urlConnection = post(url, params);
+            } else {
+                urlConnection = get(url);
+            }
             inStream = urlConnection.getInputStream();
             BufferedReader bReader = new BufferedReader(new InputStreamReader(inStream));
             String temp, response = "";
             while ((temp = bReader.readLine()) != null) {
                 response += temp;
             }
-            System.out.println(response);
-            return response;
+            return Json.jsonToMap(response);
         } catch (Exception e) {
             System.out.println(e);
         } finally {
             if (inStream != null) {
                 try {
-                    // this will close the bReader as well
                     inStream.close();
                 } catch (IOException ignored) {
                 }
@@ -52,10 +53,35 @@ public class HttpConnection {
                 urlConnection.disconnect();
             }
         }
+        return new HashMap<String, String>();
+    }
 
-
-
-        return "ok";
+    public String header(String urlString, String params, String name)
+    {
+        InputStream inStream = null;
+        URL url = null;
+        try {
+            url = new URL(urlString.toString());
+            if (this.method.equals("POST")) {
+                urlConnection = post(url, params);
+            } else {
+                urlConnection = get(url);
+            }
+            return urlConnection.getHeaderField(name);
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (inStream != null) {
+                try {
+                    inStream.close();
+                } catch (IOException ignored) {
+                }
+            }
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return null;
     }
 
     private HttpURLConnection get(URL url) throws Exception
