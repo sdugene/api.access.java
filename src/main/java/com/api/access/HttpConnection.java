@@ -26,10 +26,11 @@ public class HttpConnection {
         InputStream inStream = null;
         URL url = null;
         System.out.println(urlString);
+        System.out.println(this.method);
         try {
             url = new URL(urlString.toString());
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod(method);
+            urlConnection.setRequestMethod(this.method);
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
             urlConnection.setRequestProperty("Content-Type", "application/json");
