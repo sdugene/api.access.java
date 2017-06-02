@@ -3,26 +3,26 @@ package com.api.access;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Access
+public class ApiAccess
 {
     private String url;
     private Token token;
     private HttpConnection httpConnection;
 
-    private Access() {}
+    private ApiAccess() {}
 
     private static class SingletonHolder
     {
-        private final static Access instance = new Access();
+        private final static ApiAccess instance = new ApiAccess();
     }
 
-    public static Access getInstance()
+    public static ApiAccess getInstance()
     {
-        Access access = Access.SingletonHolder.instance;
-        return access;
+        ApiAccess apiAccess = ApiAccess.SingletonHolder.instance;
+        return apiAccess;
     }
 
-    public Access setUrl(String url)
+    public ApiAccess setUrl(String url)
     {
         this.url = url;
         return this;
@@ -33,6 +33,11 @@ public class Access
         String token = "jeSuisUnToken";
         this.token = new Token(token);
         //return this.token;
+    }
+
+    public Token getToken()
+    {
+        return this.token;
     }
 
     public void token(String device)
