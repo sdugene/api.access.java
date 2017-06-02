@@ -9,7 +9,10 @@ public class ApiAccess
     private Token token;
     private HttpConnection httpConnection;
 
-    private ApiAccess() {}
+    private ApiAccess()
+    {
+        httpConnection = new HttpConnection();
+    }
 
     private static class SingletonHolder
     {
