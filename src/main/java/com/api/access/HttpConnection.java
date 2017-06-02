@@ -7,10 +7,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpConnection {
-    public String method = "POST";
+    public String method;
     HttpURLConnection urlConnection = null;
 
-    public HttpConnection() {}
+    public HttpConnection()
+    {
+        this.setMethod("POST");
+    }
 
     public HttpConnection setMethod(String method)
     {
@@ -22,6 +25,7 @@ public class HttpConnection {
     {
         InputStream inStream = null;
         URL url = null;
+        System.out.println(urlString);
         try {
             url = new URL(urlString.toString());
             urlConnection = (HttpURLConnection) url.openConnection();

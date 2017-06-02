@@ -49,7 +49,7 @@ public class ApiAccess
 
     public Map<String, Object> data(String tableName)
     {
-        String test = httpConnection.run(url+"/data/"+tableName, "{}");
+        String test = httpConnection.setMethod("GET").run(url+"/data/"+tableName, "{}");
         System.out.println(test);
         Map<String, Object> result = new HashMap();
         return result;
@@ -57,7 +57,7 @@ public class ApiAccess
 
     public Map<String, Object> data(String tableName, Long id)
     {
-        String test = httpConnection.run(url+"/data/"+tableName+"/"+Long.toString(id), "{}");
+        String test = httpConnection.setMethod("GET").run(url+"/data/"+tableName+"/"+Long.toString(id), "{}");
         System.out.println(test);
         Map<String, Object> result = new HashMap();
         return result;
