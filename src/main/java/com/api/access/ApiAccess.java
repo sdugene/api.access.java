@@ -1,5 +1,7 @@
 package com.api.access;
 
+import org.json.simple.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,8 +33,17 @@ public class ApiAccess
         return this;
     }
 
-    public void login(String username, String Password, String device)
+    public void login(String username, String password, String device)
     {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("username", username);
+        jsonObject.put("password", password);
+        jsonObject.put("device", device);
+        String params = jsonObject.toJSONString();
+
+        System.out.println(params);
+
+
         String token = "jeSuisUnToken";
         this.token = new Token(token);
         //return this.token;
@@ -52,18 +63,12 @@ public class ApiAccess
 
     public Map<String, Object> data(String tableName)
     {
-        String test = httpConnection.setMethod("GET").run(url+"data/"+tableName, "{}");
-        System.out.println(test);
-        Map<String, Object> result = new HashMap();
-        return result;
+        return (Map)httpConnection.setMethod("GET").response(url+"data/"+tableName, "{}");
     }
 
     public Map<String, Object> data(String tableName, Long id)
     {
-        String test = httpConnection.setMethod("GET").run(url+"/data/"+tableName+"/"+Long.toString(id), "{}");
-        System.out.println(test);
-        Map<String, Object> result = new HashMap();
-        return result;
+        return (Map)httpConnection.setMethod("GET").response(url+"/data/"+tableName+"/"+Long.toString(id), "{}");
     }
 
     public Map<String, Object> api(String controller, String method, String params)
