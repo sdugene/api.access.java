@@ -79,6 +79,14 @@ public class HttpConnection {
                         + " ,Value : " + entry.getValue());
             }
 
+            inStream = urlConnection.getInputStream();
+            BufferedReader bReader = new BufferedReader(new InputStreamReader(inStream));
+            String temp, response = "";
+            while ((temp = bReader.readLine()) != null) {
+                response += temp;
+            }
+            System.out.println(response);
+
 
             return urlConnection.getHeaderField(name);
         } catch (Exception e) {
