@@ -68,14 +68,14 @@ public class ApiAccess
     {
         return (Map)httpConnection
                 .setMethod("GET")
-                .response(url+"data/"+tableName, null, token.getToken(), "Authorization");
+                .response(url+"data/"+tableName, "{}", token.getToken(), "Authorization");
     }
 
     public Map<String, Object> data(String tableName, Long id)
     {
         return (Map)httpConnection
                 .setMethod("GET")
-                .response(url+"/data/"+tableName+"/"+Long.toString(id), null, token.getToken(), "Authorization");
+                .response(url+"/data/"+tableName+"/"+Long.toString(id), "{}", token.getToken(), "Authorization");
     }
 
     public Map<String, Object> api(String controller, String method, String params)
