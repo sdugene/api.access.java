@@ -35,13 +35,14 @@ public class HttpConnection {
             } else {
                 urlConnection = get(url, token, headerName);
             }
-            this.printHeaders(urlConnection);
+            //this.printHeaders(urlConnection);
             inStream = urlConnection.getInputStream();
             BufferedReader bReader = new BufferedReader(new InputStreamReader(inStream));
             String temp, response = "";
             while ((temp = bReader.readLine()) != null) {
                 response += temp;
             }
+            System.out.println(response);
             return Json.jsonToMap(response);
         } catch (Exception e) {
             System.out.println(e);
