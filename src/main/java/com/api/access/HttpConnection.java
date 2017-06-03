@@ -126,10 +126,18 @@ public class HttpConnection {
         urlConnection.setDoInput(true);
         urlConnection.setRequestProperty("Content-Type", "application/json");
 
-        byte[] outputInBytes = params.getBytes("UTF-8");
-        OutputStream os = urlConnection.getOutputStream();
-        os.write( outputInBytes );
-        os.close();
+        if (params != null) {
+            //set the content length of the body
+            urlConnection.setRequestProperty("Content-length", params.getBytes().length + "");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+            urlConnection.setUseCaches(false);
+
+            //send the json as body of the request
+            OutputStream outputStream = urlConnection.getOutputStream();
+            outputStream.write(params.getBytes("UTF-8"));
+            outputStream.close();
+        }
 
         urlConnection.connect();
         return urlConnection;
