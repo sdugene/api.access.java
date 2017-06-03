@@ -24,16 +24,16 @@ public class HttpConnection {
         return this;
     }
 
-    public HashMap<String,String> response(String urlString, String params)
+    public HashMap<String,String> response(String urlString, String params, String token, String headerName)
     {
         InputStream inStream = null;
         URL url = null;
         try {
             url = new URL(urlString.toString());
             if (this.method.equals("POST")) {
-                urlConnection = post(url, params);
+                urlConnection = post(url, params, token, headerName);
             } else {
-                urlConnection = get(url);
+                urlConnection = get(url, token, headerName);
             }
             inStream = urlConnection.getInputStream();
             BufferedReader bReader = new BufferedReader(new InputStreamReader(inStream));
@@ -58,37 +58,19 @@ public class HttpConnection {
         return new HashMap<String, String>();
     }
 
-    public String header(String urlString, String params, String name)
+    public String header(String urlString, String params, String headerName)
     {
         InputStream inStream = null;
         URL url = null;
         try {
             url = new URL(urlString.toString());
             if (this.method.equals("POST")) {
-                urlConnection = post(url, params);
+                urlConnection = post(url, params, null, null);
             } else {
-                urlConnection = get(url);
+                urlConnection = get(url, null, null);
             }
 
-            Map<String, List<String>> map = urlConnection.getHeaderFields();
-
-            System.out.println("Printing Response Header...\n");
-
-            for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-                System.out.println("Key : " + entry.getKey()
-                        + " ,Value : " + entry.getValue());
-            }
-
-            inStream = urlConnection.getInputStream();
-            BufferedReader bReader = new BufferedReader(new InputStreamReader(inStream));
-            String temp, response = "";
-            while ((temp = bReader.readLine()) != null) {
-                response += temp;
-            }
-            System.out.println(response);
-
-
-            return urlConnection.getHeaderField(name);
+            return urlConnection.getHeaderField(headerName);
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -105,19 +87,19 @@ public class HttpConnection {
         return null;
     }
 
-    private HttpURLConnection get(URL url) throws Exception
+    private HttpURLConnection get(URL url, String token, String headerName) throws Exception
     {
         urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
         urlConnection.setDoOutput(true);
         urlConnection.setDoInput(true);
         urlConnection.setRequestProperty("Content-Type", "application/json");
-        urlConnection.setRequestProperty("auth", "3c725b82ec06903cc43c6fe0980c0e7d");
+        urlConnection.setRequestProperty(headerName, token);
         urlConnection.connect();
         return urlConnection;
     }
 
-    private HttpURLConnection post(URL url, String params) throws Exception
+    private HttpURLConnection post(URL url, String params, String token, String headerName) throws Exception
     {
         System.out.println(params);
         urlConnection = (HttpURLConnection) url.openConnection();
@@ -125,6 +107,9 @@ public class HttpConnection {
         urlConnection.setDoOutput(true);
         urlConnection.setDoInput(true);
         urlConnection.setRequestProperty("Content-Type", "application/json");
+        if (token != null && headerName != null) {
+            urlConnection.setRequestProperty(headerName, token);
+        }
 
         if (params != null) {
             //set the content length of the body

@@ -40,16 +40,11 @@ public class ApiAccess
         jsonObject.put("password", password);
         jsonObject.put("device", device);
         String params = jsonObject.toJSONString();
-        String test = httpConnection
+        String token = httpConnection
                 .setMethod("POST")
                 .header(url+"api/account/user/login", params, "Authorization");
 
-        System.out.println(test);
-
-
-        String token = "jeSuisUnToken";
         this.token = new Token(token);
-        //return this.token;
     }
 
     public Token getToken()
@@ -59,35 +54,41 @@ public class ApiAccess
 
     public void token(String device)
     {
-        String token = "jeSuisUnAncienToken";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("device", device);
+        String params = jsonObject.toJSONString();
+        String token = httpConnection
+                .setMethod("POST")
+                .header(url+"api/account/user/login", params, "Authorization");
+
         this.token = new Token(token);
-        //return this.token;
     }
 
     public Map<String, Object> data(String tableName)
     {
         return (Map)httpConnection
                 .setMethod("GET")
-                .response(url+"data/"+tableName, "{}");
+                .response(url+"data/"+tableName, null, token.getToken(), "Authorization");
     }
 
     public Map<String, Object> data(String tableName, Long id)
     {
         return (Map)httpConnection
                 .setMethod("GET")
-                .response(url+"/data/"+tableName+"/"+Long.toString(id), "{}");
+                .response(url+"/data/"+tableName+"/"+Long.toString(id), null, token.getToken(), "Authorization");
     }
 
     public Map<String, Object> api(String controller, String method, String params)
     {
-        Map<String, Object> result = new HashMap();
-        return result;
+        return (Map)httpConnection
+                .setMethod("POST")
+                .response(url+"api/"+controller+"/"+method, params, token.getToken(), "Authorization");
     }
 
     public Map<String, Object> mailer(String method, String params)
     {
-        String controller = "mail";
-        Map<String, Object> result = new HashMap();
-        return result;
+        return (Map)httpConnection
+                .setMethod("POST")
+                .response(url+"api/mailer/"+method, params, token.getToken(), "Authorization");
     }
 }
