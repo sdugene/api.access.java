@@ -32,7 +32,7 @@ public class Json {
         return null;
     }
 
-    public static List<Map<String,Object>> jsonToListOfMap(String string)
+    public static List<Object> jsonToListOfMap(String string)
     {
         JSONParser parser = new JSONParser();
         Type listType = new TypeToken<List<Object>>(){}.getType();
