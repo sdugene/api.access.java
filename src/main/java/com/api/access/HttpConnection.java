@@ -35,6 +35,7 @@ public class HttpConnection {
             } else {
                 urlConnection = get(url, token, headerName);
             }
+            this.printHeaders(urlConnection);
             inStream = urlConnection.getInputStream();
             BufferedReader bReader = new BufferedReader(new InputStreamReader(inStream));
             String temp, response = "";
@@ -101,7 +102,6 @@ public class HttpConnection {
 
     private HttpURLConnection post(URL url, String params, String token, String headerName) throws Exception
     {
-        System.out.println(params);
         urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("POST");
         urlConnection.setDoOutput(true);
@@ -126,5 +126,17 @@ public class HttpConnection {
 
         urlConnection.connect();
         return urlConnection;
+    }
+
+    private void printHeaders(HttpURLConnection urlConnection)
+    {
+        Map<String, List<String>> map = urlConnection.getHeaderFields();
+
+        System.out.println("Printing Response Header...\n");
+
+        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+            System.out.println("Key : " + entry.getKey()
+                    + " ,Value : " + entry.getValue());
+        }
     }
 }
