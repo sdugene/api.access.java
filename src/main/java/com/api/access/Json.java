@@ -7,12 +7,13 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Json {
-    public static HashMap<String,String> jsonToMap(String string)
+    public static Map<String,String> jsonToMap(String string)
     {
         JSONParser parser = new JSONParser();
         try {
@@ -31,16 +32,16 @@ public class Json {
         return null;
     }
 
-    public static List<HashMap<String,String>> jsonToListOfMap(String string)
+    public static List<Map<String,Object>> jsonToListOfMap(String string)
     {
         JSONParser parser = new JSONParser();
+        Type listType = new TypeToken<List<Object>>(){}.getType();
         try {
             Object obj = parser.parse(string);
             if (obj instanceof JSONArray) {
                 return null;
             } else {
-                return new Gson().fromJson(string,
-                        new TypeToken<List<Map<String, Object>>>() {}.getType());
+                return new Gson().fromJson(string, listType);
             }
         } catch (ParseException e) {
             e.printStackTrace();
