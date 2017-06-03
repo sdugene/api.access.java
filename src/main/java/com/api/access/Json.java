@@ -8,6 +8,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Json {
     public static HashMap<String,String> jsonToMap(String string)
@@ -21,6 +23,24 @@ public class Json {
                 return new Gson().fromJson(
                     string, new TypeToken<HashMap<String,String>>() {}.getType()
                 );
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static List<HashMap<String,String>> jsonToListOfMap(String string)
+    {
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(string);
+            if (obj instanceof JSONArray) {
+                return null;
+            } else {
+                return new Gson().fromJson(string,
+                        new TypeToken<List<Map<String, Object>>>() {}.getType());
             }
         } catch (ParseException e) {
             e.printStackTrace();

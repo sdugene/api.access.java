@@ -24,26 +24,23 @@ public class HttpConnection {
         return this;
     }
 
-    public HashMap<String,String> response(String urlString, String params, String token, String headerName)
+    public String response(String urlString, String params, String token, String headerName)
     {
         InputStream inStream = null;
-        URL url = null;
         try {
-            url = new URL(urlString.toString());
+            URL url = new URL(urlString.toString());
             if (this.method.equals("POST")) {
                 urlConnection = post(url, params, token, headerName);
             } else {
                 urlConnection = get(url, token, headerName);
             }
-            //this.printHeaders(urlConnection);
             inStream = urlConnection.getInputStream();
             BufferedReader bReader = new BufferedReader(new InputStreamReader(inStream));
             String temp, response = "";
             while ((temp = bReader.readLine()) != null) {
                 response += temp;
             }
-            System.out.println(response);
-            return Json.jsonToMap(response);
+            return response;
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -57,15 +54,14 @@ public class HttpConnection {
                 urlConnection.disconnect();
             }
         }
-        return new HashMap<String, String>();
+        return null;
     }
 
     public String header(String urlString, String params, String headerName)
     {
         InputStream inStream = null;
-        URL url = null;
         try {
-            url = new URL(urlString.toString());
+            URL url = new URL(urlString.toString());
             if (this.method.equals("POST")) {
                 urlConnection = post(url, params, null, null);
             } else {
