@@ -64,30 +64,30 @@ public class ApiAccess
         this.token = new Token(token);
     }
 
-    public Map<String, Object> data(String tableName)
+    public String data(String tableName)
     {
-        return (Map)httpConnection
+        return httpConnection
                 .setMethod("GET")
                 .response(url+"data/"+tableName, "{}", token.getToken(), "Authorization");
     }
 
-    public Map<String, Object> data(String tableName, Long id)
+    public String data(String tableName, Long id)
     {
-        return (Map)httpConnection
+        return httpConnection
                 .setMethod("GET")
                 .response(url+"/data/"+tableName+"/"+Long.toString(id), "{}", token.getToken(), "Authorization");
     }
 
-    public Map<String, Object> api(String controller, String method, String params)
+    public String api(String controller, String method, String params)
     {
-        return (Map)httpConnection
+        return httpConnection
                 .setMethod("POST")
                 .response(url+"api/"+controller+"/"+method, params, token.getToken(), "Authorization");
     }
 
-    public Map<String, Object> mailer(String method, String params)
+    public String mailer(String method, String params)
     {
-        return (Map)httpConnection
+        return httpConnection
                 .setMethod("POST")
                 .response(url+"api/mailer/"+method, params, token.getToken(), "Authorization");
     }
