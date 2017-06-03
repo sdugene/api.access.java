@@ -125,8 +125,13 @@ public class HttpConnection {
         urlConnection.setDoInput(true);
         urlConnection.setRequestProperty("Content-Type", "application/json");
         urlConnection.setRequestProperty("auth", "3c725b82ec06903cc43c6fe0980c0e7d");
-        OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
-        wr.write(params);
+
+        byte[] outputInBytes = params.getBytes("UTF-8");
+        OutputStream os = urlConnection.getOutputStream();
+        os.write( outputInBytes );
+        os.close();
+
+
         urlConnection.connect();
         return urlConnection;
     }
