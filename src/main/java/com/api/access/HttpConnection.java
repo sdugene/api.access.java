@@ -119,18 +119,17 @@ public class HttpConnection {
 
     private HttpURLConnection post(URL url, String params) throws Exception
     {
+        System.out.println(params);
         urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("POST");
         urlConnection.setDoOutput(true);
         urlConnection.setDoInput(true);
         urlConnection.setRequestProperty("Content-Type", "application/json");
-        urlConnection.setRequestProperty("auth", "3c725b82ec06903cc43c6fe0980c0e7d");
 
         byte[] outputInBytes = params.getBytes("UTF-8");
         OutputStream os = urlConnection.getOutputStream();
         os.write( outputInBytes );
         os.close();
-
 
         urlConnection.connect();
         return urlConnection;
