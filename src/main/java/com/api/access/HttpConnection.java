@@ -6,6 +6,8 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HttpConnection {
     public String method;
@@ -67,6 +69,17 @@ public class HttpConnection {
             } else {
                 urlConnection = get(url);
             }
+
+            Map<String, List<String>> map = urlConnection.getHeaderFields();
+
+            System.out.println("Printing Response Header...\n");
+
+            for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+                System.out.println("Key : " + entry.getKey()
+                        + " ,Value : " + entry.getValue());
+            }
+
+
             return urlConnection.getHeaderField(name);
         } catch (Exception e) {
             System.out.println(e);
