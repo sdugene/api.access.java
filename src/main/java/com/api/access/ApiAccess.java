@@ -40,8 +40,11 @@ public class ApiAccess
         jsonObject.put("password", password);
         jsonObject.put("device", device);
         String params = jsonObject.toJSONString();
+        String test = httpConnection
+                .setMethod("POST")
+                .header(url+"api/account/user/login", params, "Authorization");
 
-        System.out.println(params);
+        System.out.println(test);
 
 
         String token = "jeSuisUnToken";
@@ -63,12 +66,16 @@ public class ApiAccess
 
     public Map<String, Object> data(String tableName)
     {
-        return (Map)httpConnection.setMethod("GET").response(url+"data/"+tableName, "{}");
+        return (Map)httpConnection
+                .setMethod("GET")
+                .response(url+"data/"+tableName, "{}");
     }
 
     public Map<String, Object> data(String tableName, Long id)
     {
-        return (Map)httpConnection.setMethod("GET").response(url+"/data/"+tableName+"/"+Long.toString(id), "{}");
+        return (Map)httpConnection
+                .setMethod("GET")
+                .response(url+"/data/"+tableName+"/"+Long.toString(id), "{}");
     }
 
     public Map<String, Object> api(String controller, String method, String params)
