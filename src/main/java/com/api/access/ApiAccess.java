@@ -50,7 +50,7 @@ public class ApiAccess
                 .header(url+"api/account/user/login", params, "Authorization");
 
         this.token = new Token(token);
-        return this.token != null;
+        return this.token.getToken() != null;
     }
 
     public boolean token(String device)
@@ -63,7 +63,7 @@ public class ApiAccess
                 .header(url+"api/account/user/login", params, "Authorization");
 
         this.token = new Token(token);
-        return this.token != null;
+        return this.token.getToken() != null;
 
     }
 

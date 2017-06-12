@@ -22,7 +22,6 @@ public class Token {
     public static boolean checkToken(String token)
     {
         String pattern = "^Bearer[\\s].*$";
-        if (token != null && token.matches(pattern)) return true;
-        return false;
+        return token != null && token.matches(pattern);
     }
 }
