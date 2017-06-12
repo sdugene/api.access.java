@@ -33,7 +33,12 @@ public class ApiAccess
         return this;
     }
 
-    public void login(String username, String password, String device)
+    public Token getToken()
+    {
+        return this.token;
+    }
+
+    public boolean login(String username, String password, String device)
     {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("username", username);
@@ -45,14 +50,13 @@ public class ApiAccess
                 .header(url+"api/account/user/login", params, "Authorization");
 
         this.token = new Token(token);
+        if (this.token != null) {
+            return true;
+        }
+        return false;
     }
 
-    public Token getToken()
-    {
-        return this.token;
-    }
-
-    public void token(String device)
+    public boolean token(String device)
     {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("device", device);
@@ -62,6 +66,11 @@ public class ApiAccess
                 .header(url+"api/account/user/login", params, "Authorization");
 
         this.token = new Token(token);
+        if (this.token != null) {
+            return true;
+        }
+        return false;
+
     }
 
     public String data(String tableName)
