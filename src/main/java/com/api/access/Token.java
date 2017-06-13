@@ -8,12 +8,20 @@ public class Token {
 
     public Token(String token)
     {
-        this.token = token;
-        this.date = new Date();
+        if (Token.checkToken(token)) {
+            this.token = token;
+            this.date = new Date();
+        }
     }
 
     public String getToken()
     {
         return this.token;
+    }
+
+    public static boolean checkToken(String token)
+    {
+        String pattern = "^Bearer[\\s].*$";
+        return token != null && token.matches(pattern);
     }
 }
