@@ -38,11 +38,10 @@ public class ApiAccess
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("username", username);
         jsonObject.put("password", password);
-        jsonObject.put("device", device);
         String params = jsonObject.toJSONString();
         String token = httpConnection
                 .setMethod("POST")
-                .header(url+"api/account/user/login", params, "Authorization");
+                .header(url+"api/account/user/login", params, device, "Authorization");
 
         this.token = new Token(token);
     }
@@ -54,12 +53,9 @@ public class ApiAccess
 
     public void token(String device)
     {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("device", device);
-        String params = jsonObject.toJSONString();
         String token = httpConnection
                 .setMethod("POST")
-                .header(url+"api/account/user/login", params, "Authorization");
+                .header(url+"api/account/user/login", "{}", device, "Authorization");
 
         this.token = new Token(token);
     }

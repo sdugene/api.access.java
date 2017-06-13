@@ -56,18 +56,18 @@ public class HttpConnection {
         return null;
     }
 
-    public String header(String urlString, String params, String headerName)
+    public String header(String urlString, String params, String header, String name)
     {
         InputStream inStream = null;
         try {
             URL url = new URL(urlString.toString());
             if (this.method.equals("POST")) {
-                urlConnection = post(url, params, null, null);
+                urlConnection = post(url, params, header, "device");
             } else {
-                urlConnection = get(url, null, null);
+                urlConnection = get(url, header, "device");
             }
 
-            return urlConnection.getHeaderField(headerName);
+            return urlConnection.getHeaderField(name);
         } catch (Exception e) {
             System.out.println(e);
         } finally {
