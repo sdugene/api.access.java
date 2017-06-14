@@ -56,7 +56,7 @@ public class ApiAccess
     {
         String token = httpConnection
                 .setMethod("POST")
-                .header(url+"api/account/user/login", "{}", device, "Authorization");
+                .header(url+"api/account/user/token", "{}", device, "Authorization");
 
         this.token = new Token(token);
         return this.token.getToken() != null;
