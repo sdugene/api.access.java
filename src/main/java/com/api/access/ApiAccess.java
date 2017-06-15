@@ -54,11 +54,10 @@ public class ApiAccess
 
     public boolean logout(String device)
     {
-        String token = httpConnection
+        String responseCode = httpConnection
                 .setMethod("POST")
                 .header(url+"api/account/user/logout", "{}", device, "responseCode");
-        System.out.println(token);
-        return true;
+        return responseCode.equals("200");
 
     }
 
