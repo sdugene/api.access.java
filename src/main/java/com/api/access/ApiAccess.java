@@ -56,7 +56,7 @@ public class ApiAccess
     {
         String token = httpConnection
                 .setMethod("POST")
-                .header(url+"api/account/user/logout", "{}", device, "status");
+                .header(url+"api/account/user/logout", "{}", device, "responseCode");
         System.out.println(token);
         return true;
 

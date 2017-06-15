@@ -67,6 +67,9 @@ public class HttpConnection {
                 urlConnection = get(url, header, "device");
             }
 
+            if (name.equals("responseCode")) {
+                return Integer.toString(urlConnection.getResponseCode());
+            }
             return urlConnection.getHeaderField(name);
         } catch (Exception e) {
             System.out.println(e);
