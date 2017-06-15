@@ -33,11 +33,6 @@ public class ApiAccess
         return this;
     }
 
-    public Token getToken()
-    {
-        return this.token;
-    }
-
     public boolean login(String username, String password, String device)
     {
         JSONObject jsonObject = new JSONObject();
@@ -57,6 +52,7 @@ public class ApiAccess
         String responseCode = httpConnection
                 .setMethod("POST")
                 .header(url+"api/account/user/logout", "{}", device, "responseCode");
+        this.token = new Token();
         return responseCode.equals("200");
 
     }

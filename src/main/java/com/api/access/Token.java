@@ -6,6 +6,12 @@ public class Token {
     private String token;
     private Date date;
 
+    public Token()
+    {
+        this.token = null;
+        this.date = null;
+    }
+
     public Token(String token)
     {
         if (Token.checkToken(token)) {
