@@ -82,6 +82,13 @@ public class ApiAccess
                 .response(url+"/data/"+tableName+"/"+Long.toString(id), "{}", token.getToken(), "Authorization");
     }
 
+    public String api(String controller, String method)
+    {
+        return httpConnection
+                .setMethod("POST")
+                .response(url+"api/"+controller+"/"+method, "{}", token.getToken(), "Authorization");
+    }
+
     public String api(String controller, String method, String params)
     {
         return httpConnection
