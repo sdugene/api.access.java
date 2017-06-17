@@ -1,47 +1,64 @@
 package com.api.access;
 
-import org.json.simple.JSONObject;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
-public class HttpConnection {
-    public String method;
-    HttpURLConnection urlConnection = null;
+/**
+ * Created by Sebastien Dugene on 30/05/2017.
+ */
+class HttpConnection
+{
+    private String method;
+    private HttpURLConnection urlConnection = null;
 
-    public HttpConnection()
+    /**
+     * Set HttpConnection
+     * Define POST http method
+     */
+    HttpConnection()
     {
         this.setMethod("POST");
     }
 
-    public HttpConnection setMethod(String method)
+    /**
+     * Set the http method
+     *
+     * @param method http method
+     */
+    HttpConnection setMethod(String method)
     {
         this.method = method;
         return this;
     }
 
-    public String response(String urlString, String params, String token, String headerName)
+    /**
+     * Call an url and return the response body
+     *
+     * @param urlString url to call
+     * @param params post params
+     * @param token security access token
+     */
+    String response(String urlString, String params, String token)
     {
+        String temp;
+        StringBuilder response = new StringBuilder();
         InputStream inStream = null;
         try {
-            URL url = new URL(urlString.toString());
+            URL url = new URL(urlString);
             if (this.method.equals("POST")) {
-                urlConnection = post(url, params, token, headerName);
+                urlConnection = post(url, params, token, "Authorization");
             } else {
-                urlConnection = get(url, token, headerName);
+                urlConnection = get(url, token, "Authorization");
             }
             inStream = urlConnection.getInputStream();
             BufferedReader bReader = new BufferedReader(new InputStreamReader(inStream));
-            String temp, response = "";
             while ((temp = bReader.readLine()) != null) {
-                response += temp;
+                response.append(temp);
             }
-            return response;
+            return response.toString();
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
         } finally {
             if (inStream != null) {
                 try {
@@ -56,11 +73,18 @@ public class HttpConnection {
         return null;
     }
 
-    public String header(String urlString, String params, String header, String name)
+    /**
+     * Call an url and return authorization header
+     *
+     * @param urlString url to call
+     * @param params post params
+     * @param header header sent value
+     * @param name name of header to return
+     */
+    String header(String urlString, String params, String header, String name)
     {
-        InputStream inStream = null;
         try {
-            URL url = new URL(urlString.toString());
+            URL url = new URL(urlString);
             if (this.method.equals("POST")) {
                 urlConnection = post(url, params, header, "device");
             } else {
@@ -72,14 +96,8 @@ public class HttpConnection {
             }
             return urlConnection.getHeaderField(name);
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
         } finally {
-            if (inStream != null) {
-                try {
-                    inStream.close();
-                } catch (IOException ignored) {
-                }
-            }
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
@@ -87,27 +105,42 @@ public class HttpConnection {
         return null;
     }
 
-    private HttpURLConnection get(URL url, String token, String headerName) throws Exception
+    /**
+     * Create HttpURLConnection with GET http method
+     *
+     * @param url url to call
+     * @param header header sent value
+     * @param headerName name of header sent
+     */
+    private HttpURLConnection get(URL url, String header, String headerName) throws Exception
     {
         urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
         urlConnection.setDoOutput(true);
         urlConnection.setDoInput(true);
         urlConnection.setRequestProperty("Content-Type", "application/json");
-        urlConnection.setRequestProperty(headerName, token);
+        urlConnection.setRequestProperty(headerName, header);
         urlConnection.connect();
         return urlConnection;
     }
 
-    private HttpURLConnection post(URL url, String params, String token, String headerName) throws Exception
+    /**
+     * Create HttpURLConnection with POST http method
+     *
+     * @param url url to call
+     * @param params post params
+     * @param header header sent value
+     * @param headerName name of header sent
+     */
+    private HttpURLConnection post(URL url, String params, String header, String headerName) throws Exception
     {
         urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("POST");
         urlConnection.setDoOutput(true);
         urlConnection.setDoInput(true);
         urlConnection.setRequestProperty("Content-Type", "application/json");
-        if (token != null && headerName != null) {
-            urlConnection.setRequestProperty(headerName, token);
+        if (header != null && headerName != null) {
+            urlConnection.setRequestProperty(headerName, header);
         }
 
         if (params != null) {
@@ -125,17 +158,5 @@ public class HttpConnection {
 
         urlConnection.connect();
         return urlConnection;
-    }
-
-    private void printHeaders(HttpURLConnection urlConnection)
-    {
-        Map<String, List<String>> map = urlConnection.getHeaderFields();
-
-        System.out.println("Printing Response Header...\n");
-
-        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-            System.out.println("Key : " + entry.getKey()
-                    + " ,Value : " + entry.getValue());
-        }
     }
 }

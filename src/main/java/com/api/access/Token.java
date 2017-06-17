@@ -1,31 +1,47 @@
 package com.api.access;
 
-import java.util.Date;
-
-public class Token {
+/**
+ * Created by Sebastien Dugene on 30/05/2017.
+ */
+class Token
+{
     private String token;
-    private Date date;
 
-    public Token()
+    /**
+     * Default constructor
+     */
+    Token()
     {
         this.token = null;
-        this.date = null;
     }
 
-    public Token(String token)
+    /**
+     * Set Token
+     * Call checkToken method
+     *
+     * @param token the token value
+     */
+    Token(String token)
     {
-        if (Token.checkToken(token)) {
+        if (this.checkToken(token)) {
             this.token = token;
-            this.date = new Date();
         }
     }
 
-    public String getToken()
+    /**
+     * Return the token
+     */
+    String getToken()
     {
         return this.token;
     }
 
-    public static boolean checkToken(String token)
+    /**
+     * Check the token content
+     *
+     * @param token token to check
+     */
+    private boolean checkToken(String token)
     {
         String pattern = "^Bearer[\\s].*$";
         return token != null && token.matches(pattern);
