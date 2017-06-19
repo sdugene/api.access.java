@@ -8,6 +8,9 @@ Simplified access to SiteOffice API
 
 #Example
 ```
+* instantiate :
+ApiAccess apiAccess = ApiAccess.getInstance().setUrl("url");
+
 * login :
 boolean isConnected = apiAccess.login("userName", "password", "deviceId");
 
